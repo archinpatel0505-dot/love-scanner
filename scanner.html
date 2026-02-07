@@ -8,19 +8,27 @@
   <script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
 
   <style>
-    body {
-      margin: 0;
-      background: black;
-      color: white;
-      text-align: center;
-      font-family: Arial, sans-serif;
+    body{
+      margin:0;
+      background:black;
+      color:white;
+      font-family:Arial;
+      text-align:center;
     }
-    h2 {
-      margin-top: 20px;
+    h2{margin-top:20px;}
+    button{
+      padding:12px 20px;
+      font-size:16px;
+      border:none;
+      border-radius:8px;
+      background:#ff4d6d;
+      color:white;
+      cursor:pointer;
     }
-    #reader {
-      width: 300px;
-      margin: 20px auto;
+    #reader{
+      width:300px;
+      margin:20px auto;
+      display:none;
     }
   </style>
 </head>
@@ -28,29 +36,36 @@
 <body>
 
 <h2>📷 Scan to Unlock Love</h2>
-<p>Use back camera</p>
+<p>Tap button & use back camera</p>
+
+<button onclick="startScanner()">Start Scanner</button>
 
 <div id="reader"></div>
 
 <script>
-const html5QrCode = new Html5Qrcode("reader");
+let html5QrCode;
 
-Html5Qrcode.getCameras().then(cameras => {
-  if (cameras && cameras.length) {
-    html5QrCode.start(
-      cameras[cameras.length - 1].id, // USE BACK CAMERA
-      { fps: 10, qrbox: 250 },
-      qrCodeMessage => {
-        window.location.href = qrCodeMessage;
-      },
-      errorMessage => {}
-    );
-  }
-}).catch(err => {
-  alert("Camera error: " + err);
-});
+function startScanner(){
+  document.getElementById("reader").style.display = "block";
+  html5QrCode = new Html5Qrcode("reader");
+
+  Html5Qrcode.getCameras().then(cameras => {
+    if(cameras.length){
+      html5QrCode.start(
+        cameras[cameras.length - 1].id, // BACK CAMERA
+        { fps: 10, qrbox: 250 },
+        text => {
+          window.location.href = text;
+        }
+      );
+    }
+  }).catch(err => {
+    alert("Camera error: " + err);
+  });
+}
 </script>
 
 </body>
 </html>
+
 
