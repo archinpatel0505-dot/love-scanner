@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scan to Unlock Love 💖</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  background:black;
+  color:white;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  font-family:Arial;
+  text-align:center;
+}
+#reader{
+  width:280px;
+  margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>📷 Scan to Unlock Love</h2>
+<p>Point camera at QR code 💕</p>
+
+<div id="reader"></div>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+<script>
+function onScanSuccess(text){
+  window.location.href = text;
+}
+
+new Html5QrcodeScanner(
+  "reader",
+  { fps: 10, qrbox: 250 }
+).render(onScanSuccess);
+</script>
+
+</body>
+</html>
