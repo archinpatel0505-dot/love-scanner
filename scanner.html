@@ -1,48 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scan to Unlock Love 💖</title>
+  <meta charset="UTF-8">
+  <title>Scan to Unlock Love 💖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body{
-  margin:0;
-  height:100vh;
-  background:black;
-  color:white;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  font-family:Arial;
-  text-align:center;
-}
-#reader{
-  width:280px;
-  margin-top:20px;
-}
-</style>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: white;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+    h2 {
+      margin-top: 20px;
+    }
+    #reader {
+      width: 300px;
+      margin: 20px auto;
+    }
+  </style>
 </head>
 
 <body>
 
 <h2>📷 Scan to Unlock Love</h2>
-<p>Point camera at QR code 💕</p>
+<p>Use back camera</p>
 
 <div id="reader"></div>
 
-<script src="https://unpkg.com/html5-qrcode"></script>
 <script>
-function onScanSuccess(text){
-  window.location.href = text;
-}
+const html5QrCode = new Html5Qrcode("reader");
 
-new Html5QrcodeScanner(
-  "reader",
-  { fps: 10, qrbox: 250 }
-).render(onScanSuccess);
+Html5Qrcode.getCameras().then(cameras => {
+  if (cameras && cameras.length) {
+    html5QrCode.start(
+      cameras[cameras.length - 1].id, // USE BACK CAMERA
+      { fps: 10, qrbox: 250 },
+      qrCodeMessage => {
+        window.location.href = qrCodeMessage;
+      },
+      errorMessage => {}
+    );
+  }
+}).catch(err => {
+  alert("Camera error: " + err);
+});
 </script>
 
 </body>
 </html>
+
